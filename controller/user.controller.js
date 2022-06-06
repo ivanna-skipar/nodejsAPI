@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const { secret } = require("./config")
+const { generateMessage } = require('../public/message');
 
 const generateAccessToken = (id, email) => {
     const payload = {
@@ -52,10 +53,12 @@ class UserController {
         };
         
         const updateById = await db.query('UPDATE list_of_users SET first_name=$1, last_name=$2, email=$3, phone=$4, password=$5 WHERE id=$6 RETURNING *', [first_name, last_name, email, phone, password, id]);
-        res.json(updateById.rows[0])
+        const message = generateMessage(id);
+        console.log("message ->", message);
+        res.json(`User with id ${message.message} and name ${first_name} was update`);
     }
 
-    
+   
     async loginUser(req, res) {
         const { email, password } = req.body;
         const userPassword = await db.query('SELECT password FROM list_of_users WHERE email=$1', [email]);

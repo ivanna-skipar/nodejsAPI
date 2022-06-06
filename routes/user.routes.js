@@ -5,7 +5,6 @@ const userController = require('../controller/user.controller');
 
 const { check } = require('express-validator');
 
-
 router.post('/users', [
     check('first_name', "Enter first name.").notEmpty(),
     check('first_name', "Field 'First name' can contain only letters.").isAlpha(),
@@ -28,6 +27,6 @@ router.put('/users/:id', [
     check('email', "Enter correct email").isEmail(),
     check('phone', "Enter correct phone number. Use only numbers").isNumeric(),
     check('password', "Enter the password").notEmpty()
-],userController.updateUser);
+], userController.updateUser);
 
 module.exports = router;
